@@ -31,6 +31,8 @@ api.returnBasePath = function() {
 	* The API authentication token
 	*/
 api.authToken = auth.token( 'local' );
+// api.authToken = auth.token( 'staging' );
+// api.authToken = auth.token( 'production' );
 
 /**
 	* Returns the API authentication query
