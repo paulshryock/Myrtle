@@ -15,9 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 
 ## 1.0.0 - 2018-XX-XX - XXXXXX
+
 ### Added
-- Add the main API object
-- Add API functions
+- Add JavaScript API functions
 	- Return the base path of the API
 	- Return the API authentication query
 	- Authenticate user
@@ -26,3 +26,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 	- Get collection entries
 	- Get collection entries filtered
 	- Initialize the main API object
+- Add PHP API functions
+	- Return the base path of the API
+	- Return the API authentication query
+	- Authenticate user
+		- _Incomplete_
+	- Get all collections
+	- Get collection schema
+	- Get collection entries
+	- Get collection entries filtered
+		- _Incomplete_
