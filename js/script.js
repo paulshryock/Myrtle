@@ -8,7 +8,7 @@ let api = {};
 	*/
 api.init = function() {
 
-	api.authenticateUser();
+	// api.authenticateUser();
 	// api.getAllCollections();
 	// api.getCollectionSchema( 'articles' );
 	// api.getCollectionEntries( 'articles' );
@@ -53,14 +53,16 @@ api.authenticateUser = function() {
 	let basePath = api.returnBasePath(),
 			authQuery = api.returnAuthQuery(),
 			route = 'cockpit/authUser',
-			endpoint = basePath + route + authQuery;
+			endpoint = basePath + route + authQuery,
+			userUsername = auth.username( 'admin' ),
+			userPassword = auth.password( 'admin' );
 
 	fetch(endpoint, {
 		method: 'post',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({
-			user: 'PaulShryock',
-			password: 'C9DE6Mx2e&&63nU?'
+			user: userUsername,
+			password: userPassword
 		})
 	})
 	.then(user => user.json())
