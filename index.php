@@ -17,7 +17,7 @@ echo '<ul>';
 
 foreach ($articles as $article) {
 
-	$status = $article->status[0];
+	$status = $article->status;
 	$title = $article->title;
 	$slug = $article->slug;
 	$content = $article->content;
