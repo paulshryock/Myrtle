@@ -8,6 +8,7 @@ let api = {};
 	*/
 api.init = function() {
 
+	// api.returnBasePath();
 	// api.authenticateUser();
 	// api.getAllCollections();
 	// api.getCollectionSchema( 'articles' );
@@ -17,11 +18,40 @@ api.init = function() {
 };
 
 /**
-	* Returns the base path of the API
+	* Returns the base path of the domain
+	* (i.e., https://example.com)
+	*
+	* param {string} $subdomain - Subdomain to include in the base path (optional)
+	* (i.e., https://cms.example.com)
+	*
+	* param {string} $slug - Slug to include after the base path (optional)
+	* (i.e., https://example.com/api/)
 	*/
-api.returnBasePath = function() {
+api.returnBasePath = function( subdomain, slug ) {
 
-	let basePath = '../cms/api/';
+	let location = window.location,
+			protocol = location.protocol,
+			domain = location.host,
+			origin = location.origin,
+			pathname = location.pathname,
+			port = location.port,
+			disp_port = (protocol == 'http:' && port == 80 || protocol == 'https:' && port == 443) ? '' : ':' . port,
+			basePath;
+
+	subdomain = ( '' !== subdomain ) ? subdomain : '';
+	slug = ( '' !== slug ) ? slug : '';
+
+	if (subdomain && disp_port && slug) {
+		basePath = protocol + '//' + subdomain + '.' + domain + disp_port + pathname + slug + '/';
+	} else if (subdomain && slug) {
+		basePath = protocol + '//' + subdomain + '.' + domain + pathname + slug + '/';
+	} else if (subdomain) {
+		basePath = protocol + '//' + subdomain + '.' + domain + pathname;
+	} else if (slug) {
+		basePath = protocol + '//' + domain + pathname + slug + '/';
+	} else {
+		basePath = protocol + '//' + domain + pathname;
+	}
 
 	return basePath;
 
@@ -50,7 +80,7 @@ api.returnAuthQuery = function() {
 	*/
 api.authenticateUser = function() {
 
-	let basePath = api.returnBasePath(),
+	let basePath = api.returnBasePath( 'cms', 'api' ),
 			authQuery = api.returnAuthQuery(),
 			route = 'cockpit/authUser',
 			endpoint = basePath + route + authQuery,
@@ -75,7 +105,7 @@ api.authenticateUser = function() {
 	*/
 api.getAllCollections = function() {
 
-	let basePath = api.returnBasePath(),
+	let basePath = api.returnBasePath( 'cms', 'api' ),
 			authQuery = api.returnAuthQuery(),
 			route = 'collections/listCollections',
 			endpoint = basePath + route + authQuery;
@@ -93,7 +123,7 @@ api.getAllCollections = function() {
 	*/
 api.getCollectionSchema = function( collectionName ) {
 
-	let basePath = api.returnBasePath(),
+	let basePath = api.returnBasePath( 'cms', 'api' ),
 			authQuery = api.returnAuthQuery(),
 			route = 'collections/collection/' + collectionName,
 			endpoint = basePath + route + authQuery;
@@ -111,7 +141,7 @@ api.getCollectionSchema = function( collectionName ) {
 	*/
 api.getCollectionEntries = function( collectionName ) {
 
-	let basePath = api.returnBasePath(),
+	let basePath = api.returnBasePath( 'cms', 'api' ),
 			authQuery = api.returnAuthQuery(),
 			route = 'collections/get/' + collectionName,
 			endpoint = basePath + route + authQuery;
@@ -130,17 +160,19 @@ api.getCollectionEntries = function( collectionName ) {
 	*/
 api.getCollectionEntriesFiltered = function( collectionName ) {
 
-	let basePath = api.returnBasePath(),
+	let basePath = api.returnBasePath( 'cms', 'api' ),
 			authQuery = api.returnAuthQuery(),
 			route = 'collections/get/' + collectionName,
 			endpoint = basePath + route + authQuery;
+
+	// To Do: Fix the filter
 
 	// Get filtered entries
 	fetch(endpoint, {
 		method: 'post',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({
-			filter: {status:'Published'},
+			filter: {published:true},
 			limit: 10,
 			skip: 5,
 			sort: {_created:-1},
