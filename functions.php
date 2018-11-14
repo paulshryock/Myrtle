@@ -3,35 +3,27 @@
 include( 'auth.php' );
 
 /**
-	* Returns the base path of the API
+	* Returns the base path of the domain
+	* (i.e., https://example.com)
+	*
+	* param {string} $subdomain - Subdomain to include in the base path (optional)
+	* (i.e., https://cms.example.com)
+	*
+	* param {string} $slug - Slug to include after the base path (optional)
+	* (i.e., https://example.com/api)
 	*/
-function api_returnBasePath() {
+function api_returnBasePath( $subdomain = '', $slug = '' ) {
 
-	// base directory
-	$base_dir = __DIR__;
-
-	// server protocol
+	$base_directory = __DIR__;
 	$protocol = empty($_SERVER['HTTPS']) ? 'http' : 'https';
-
-	// domain name
 	$domain = $_SERVER['SERVER_NAME'];
-
-	// document root
 	$doc_root = preg_replace("!${_SERVER['SCRIPT_NAME']}$!", '', $_SERVER['SCRIPT_FILENAME']);
-
-	// base url
-	$base_url = preg_replace("!^${doc_root}!", '', $base_dir);
-
-	// server port
+	$base_url = preg_replace("!^${doc_root}!", '', $base_directory);
 	$port = $_SERVER['SERVER_PORT'];
 	$disp_port = ($protocol == 'http' && $port == 80 || $protocol == 'https' && $port == 443) ? '' : ":$port";
-
-	// put em all together to get the complete base URL
-	$url = "${protocol}://${domain}${disp_port}${base_url}";
-
-	$parent_folder = dirname( $url ); // = http://example.com/path/directory
-
-	$basePath = $parent_folder . DIRECTORY_SEPARATOR . 'cms/api/';
+	$subdomain = ( '' !== $subdomain ) ? $subdomain . '.' : '';
+	$slug = ( '' !== $slug ) ? '/' . $slug : '';
+	$basePath = "${protocol}://${subdomain}${domain}${disp_port}${base_url}${slug}" . '/';
 
 	return $basePath;
 
@@ -62,7 +54,7 @@ function api_returnAuthQuery() {
 	*/
 function api_authenticateUser() {
 
-	$basePath = api_returnBasePath();
+	$basePath = api_returnBasePath( 'cms', 'api' );
 	$authQuery = api_returnAuthQuery();
 	$route = 'cockpit/authUser';
 	$endpoint = $basePath . $route . $authQuery;
@@ -94,7 +86,7 @@ function api_authenticateUser() {
 	*/
 function api_getAllCollections() {
 
-	$basePath = api_returnBasePath();
+	$basePath = api_returnBasePath( 'cms', 'api' );
 	$authQuery = api_returnAuthQuery();
 	$route = 'collections/listCollections';
 	$endpoint = $basePath . $route . $authQuery;
@@ -112,7 +104,7 @@ function api_getAllCollections() {
 	*/
 function api_getCollectionSchema( $collectionName ) {
 
-	$basePath = api_returnBasePath();
+	$basePath = api_returnBasePath( 'cms', 'api' );
 	$authQuery = api_returnAuthQuery();
 	$route = 'collections/collection/' . $collectionName;
 	$endpoint = $basePath . $route . $authQuery;
@@ -130,7 +122,7 @@ function api_getCollectionSchema( $collectionName ) {
 	*/
 function api_getCollectionEntries( $collectionName ) {
 
-	$basePath = api_returnBasePath();
+	$basePath = api_returnBasePath( 'cms', 'api' );
 	$authQuery = api_returnAuthQuery();
 	$route = 'collections/get/' . $collectionName;
 	$endpoint = $basePath . $route . $authQuery;
@@ -148,7 +140,7 @@ function api_getCollectionEntries( $collectionName ) {
 	*/
 function api_getCollectionEntriesFiltered( $collectionName ) {
 
-	$basePath = api_returnBasePath();
+	$basePath = api_returnBasePath( 'cms', 'api' );
 	$authQuery = api_returnAuthQuery();
 	$route = 'collections/get/' . $collectionName;
 	$endpoint = $basePath . $route . $authQuery;
