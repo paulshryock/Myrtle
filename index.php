@@ -1,49 +1,56 @@
-<?php
+<html>
+	<head>
+		<title>Myrtle</title>
+	</head>
+	<body>
+		<?php
 
-include( 'functions.php' );
+		include( 'functions.php' );
 
-// Name of Articles collection
+		// Name of Articles collection
 
-$collection = api_getCollectionSchema( 'articles' );
-$label = $collection->label;
+		$collection = api_getCollectionSchema( 'articles' );
+		$label = $collection->label;
 
-echo '<h1>' . $label . '</h1>';
+		echo '<h1>' . $label . '</h1>';
 
-// List of article entry titles
+		// List of article entry titles
 
-$articles = api_getCollectionEntries( 'articles' )->entries;
+		$articles = api_getCollectionEntries( 'articles' )->entries;
 
-echo '<ul>';
+		echo '<ul>';
 
-foreach ($articles as $article) {
+		foreach ($articles as $article) {
 
-	$status = $article->status;
-	$title = $article->title;
-	$slug = $article->slug;
-	$content = $article->content;
+			$status = $article->status;
+			$title = $article->title;
+			$slug = $article->slug;
+			$content = $article->content;
 
-	if ( 'Published' == $status ) { ?>
+			if ( 'Published' == $status ) { ?>
 
-		<li>
-			<article>
-				<header>
-					<h2>
-						<a href="<?php echo $slug; ?>"><?php echo $title; ?></a>
-					</h2>
-				</header>
-				<div>
-					<?php echo $content; ?>
-				</div>
-			</article>
-		</li>
+				<li>
+					<article>
+						<header>
+							<h2>
+								<a href="<?php echo $slug; ?>"><?php echo $title; ?></a>
+							</h2>
+						</header>
+						<div>
+							<?php echo $content; ?>
+						</div>
+					</article>
+				</li>
 
-	<?php }
+			<?php }
 
-}
+		}
 
-echo '</ul>';
+		echo '</ul>';
 
-?>
+		?>
 
-<script type="text/javascript" src="js/auth.js"></script>
-<script type="text/javascript" src="js/script.js"></script>
+		<script type="text/javascript" src="js/auth.js"></script>
+		<script type="text/javascript" src="js/script.js"></script>
+	</body>
+</html>
