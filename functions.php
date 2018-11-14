@@ -12,7 +12,7 @@ include( 'auth.php' );
 	* param {string} $slug - Slug to include after the base path (optional)
 	* (i.e., https://example.com/api)
 	*/
-function api_returnBasePath( $subdomain, $slug ) {
+function api_returnBasePath( $subdomain = '', $slug = '' ) {
 
 	$base_directory = __DIR__;
 	$protocol = empty($_SERVER['HTTPS']) ? 'http' : 'https';
@@ -22,8 +22,8 @@ function api_returnBasePath( $subdomain, $slug ) {
 	$port = $_SERVER['SERVER_PORT'];
 	$disp_port = ($protocol == 'http' && $port == 80 || $protocol == 'https' && $port == 443) ? '' : ":$port";
 	$subdomain = ( '' !== $subdomain ) ? $subdomain . '.' : '';
-	$slug = ( '' !== $slug ) ? '/' . $slug . '/' : '';
-	$basePath = "${protocol}://${subdomain}${domain}${disp_port}${base_url}${slug}";
+	$slug = ( '' !== $slug ) ? '/' . $slug : '';
+	$basePath = "${protocol}://${subdomain}${domain}${disp_port}${base_url}${slug}" . '/';
 
 	return $basePath;
 
